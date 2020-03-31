@@ -26,3 +26,16 @@ if(isset($_POST['submit'])){
   $_SESSION['messages'] = $messages;
   header('Location:index.php');
 }
+
+elseif(isset($_POST['login'])){
+    $email = $_POST['email'];
+    $password = $_POST['password'];
+    $login = $db->login($tablename, $email, $password);
+    if($login){
+        header("Location:index.php");
+    }
+}
+
+
+
+    

@@ -3,7 +3,7 @@
 include_once "Connection.php";
 
 class User extends Connection{
-
+ //register new users
     public function insert($table, $data){
         if(!empty($data) && is_array($data)){
             $columns = implode(',', array_keys($data));
@@ -22,13 +22,37 @@ class User extends Connection{
             return false;
         }
     }
-   
-  public function select($table){
-      $query = $this->db->prepare("SELECT * FROM $table ORDER BY id DESC");
-      $query->execute();
-      while($row = $query->fetch(PDO::FETCH_ASSOC)){
-          $data[] = $row;
-      }
-      return $data;
-  }
+   // get all users 
+    public function select($table){
+        $query = $this->db->prepare("SELECT * FROM $table ORDER BY id DESC");
+        $query->execute();
+        while($row = $query->fetch(PDO::FETCH_ASSOC)){
+            $data[] = $row;
+        }
+        return $data;
+    }
+
+    // Login method 
+   public function login($table, $email, $password){
+       $query = $this->db->prepare("SELECT * FROM $table WHERE email= :email");
+       $query->execute(array(":email"=>$email));
+       $row = $query->fetch(PDO::FETCH_ASSOC);
+       if($row && is_array($row)){
+           if(password_verify($password, $row['password'])){
+               $_SESSION['user_id'] = $row['id'];
+               $_SESSION['login'] =true;
+               return $row;
+           }
+           else{
+            $_SESSION['messages'] ="Wrong password try again !";
+            header("Location:login.php");
+           }
+       }
+       else{
+           $_SESSION['messages'] ="This email address deosn't exist!";
+           header("Location:login.php");
+       }
+   }
+  
+ 
 }
