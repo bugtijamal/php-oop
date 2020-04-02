@@ -1,7 +1,5 @@
 <?php
-session_start();
 include_once "users.php";
-
 $tablename ="registration";
 
 $db = new User();
@@ -34,8 +32,4 @@ elseif(isset($_POST['login'])){
     if($login){
         header("Location:index.php");
     }
-}
-
-
-
-    
+}   

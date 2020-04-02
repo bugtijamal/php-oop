@@ -1,5 +1,5 @@
 <?php
-
+session_start();
 include_once "Connection.php";
 
 class User extends Connection{
@@ -34,6 +34,7 @@ class User extends Connection{
 
     // Login method 
    public function login($table, $email, $password){
+       $error ="";
        $query = $this->db->prepare("SELECT * FROM $table WHERE email= :email");
        $query->execute(array(":email"=>$email));
        $row = $query->fetch(PDO::FETCH_ASSOC);
@@ -44,13 +45,17 @@ class User extends Connection{
                return $row;
            }
            else{
-            $_SESSION['messages'] ="Wrong password try again !";
+           $_SESSION['messages'] ="Wrong password try again !";
             header("Location:login.php");
+            
+            
            }
        }
        else{
-           $_SESSION['messages'] ="This email address deosn't exist!";
-           header("Location:login.php");
+        $_SESSION['messages'] ="This email address deosn't exist!";
+        header("Location:login.php");
+       
+          
        }
    }
   
