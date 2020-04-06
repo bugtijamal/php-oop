@@ -1,8 +1,11 @@
-<?php
- include_once 'users.php';
- $db = new User();
+<?php 
+session_start();
+if(!$_SESSION['login']){
+    header("Location:login.php");
+}
+include_once "action.php";
+$profile = $db->profile('registration', $_GET['id']);
 ?>
-
 <!doctype html>
 <html lang="en">
   <head>
@@ -13,49 +16,35 @@
     <!-- Bootstrap CSS -->
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css" integrity="sha384-Vkoo8x4CGsO3+Hhxv8T/Q5PaXtkKtu6ug5TOeNV6gBiFeWPGFN9MuhOf23Q9Ifjh" crossorigin="anonymous">
 
-    <title>HOME</title>
+    <title>Profile</title>
   </head>
   <body>
-  <div class="container">
-  <div class="row">
-  <table class="table table-sm table-striped">
-  <thead>
-  <th>#</th>
-  <th>Profile</th>
-  <th>Name</th>
-  <th>Email</th>
-  <th>Date created</th>
-  <th>Update</th>
-  <th>Delete</th>
-  </thead>
-  <tbody>
-  <?php 
-  $users = $db->select('registration');
-  if($users):
-    $count = 0;
-    foreach($users as $user):
-        $count ++;
-  ?>
-  <tr>
-  <td><?=$count;?></td>
-  <td><img src="<?=$user['profile'];?>" width="30" hieght="30" class="rounded-circle"></td>
-  <td><?=$user['name'];?></td>
-  <td><?=$user['email'];?></td>
-  <td><?=$user['date_created'];?></td>
-  <td> <a href="update.php?id=<?=$user['id']?>">Update</a> </td>
-  <td>Delete</td>
-  </tr>
-  <?php 
-        endforeach;
-    endif;
-  ?>
-  </tbody>
-  </table>
+    <div class="container">
+    <div class="row">
+    <div class="col-md-3"></div>
+    <div class="col-md-6 shadow pb-5">
+    <h3 class="text-center p-2">Profile</h3>
+<form>
+  <div class="form-group">
+    <label for="name">name</label>
+    <input type="text" class="form-control" id="name" name="name" value="<?=$profile['name']?>">
   </div>
+  <div class="form-group">
+    <label for="username">Username</label>
+    <input type="text" class="form-control" id="username" name="username" value="<?=$profile['username']?>">
   </div>
+  <div class="form-group">
+    <label for="email">Email address</label>
+    <input type="email" class="form-control" id="email" name="email" value="<?=$profile['email']?>">
+  </div>
+  <button type="submit" class="btn btn-primary">Update</button>
+</form>
+    </div>
+    <div class="col-md-3"></div>
+    </div>
+    </div>
 
-    <!-- Optional JavaScript -->
-    <!-- jQuery first, then Popper.js, then Bootstrap JS -->
+
     <script src="https://code.jquery.com/jquery-3.4.1.slim.min.js" integrity="sha384-J6qa4849blE2+poT4WnyKhv5vZF5SrPo0iEjwBvKU7imGFAV0wwj1yYfoRSJoZ+n" crossorigin="anonymous"></script>
     <script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.0/dist/umd/popper.min.js" integrity="sha384-Q6E9RHvbIyZFJoft+2mJbHaEWldlvI9IOYy5n3zV9zzTtmI3UksdQRVvoxMfooAo" crossorigin="anonymous"></script>
     <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/js/bootstrap.min.js" integrity="sha384-wfSDF2E50Y2D1uUdj0O3uMBJnjuUD4Ih7YwaYd1iqfktj0Uod8GCExl3Og8ifwB6" crossorigin="anonymous"></script>

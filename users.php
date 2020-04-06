@@ -31,7 +31,12 @@ class User extends Connection{
         }
         return $data;
     }
-
+    public function profile($table, $id){
+        $query = $this->db->prepare("SELECT * FROM $table WHERE id = :id LIMIT 1");
+        $query->execute(array(":id"=>$id));
+        $row = $query->fetch(PDO::FETCH_ASSOC);
+        return $row;
+    }
     // Login method 
    public function login($table, $email, $password){
        $error ="";
