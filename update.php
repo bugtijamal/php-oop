@@ -3,8 +3,11 @@ session_start();
 if(!$_SESSION['login']){
     header("Location:login.php");
 }
+
 include_once "action.php";
+
 $profile = $db->profile('registration', $_GET['id']);
+
 ?>
 <!doctype html>
 <html lang="en">
@@ -16,7 +19,7 @@ $profile = $db->profile('registration', $_GET['id']);
     <!-- Bootstrap CSS -->
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css" integrity="sha384-Vkoo8x4CGsO3+Hhxv8T/Q5PaXtkKtu6ug5TOeNV6gBiFeWPGFN9MuhOf23Q9Ifjh" crossorigin="anonymous">
 
-    <title>Profile</title>
+    <title>User profile</title>
   </head>
   <body>
     <div class="container">
@@ -24,27 +27,33 @@ $profile = $db->profile('registration', $_GET['id']);
     <div class="col-md-3"></div>
     <div class="col-md-6 shadow pb-5">
     <h3 class="text-center p-2">Profile</h3>
-<form>
-  <div class="form-group">
-    <label for="name">name</label>
-    <input type="text" class="form-control" id="name" name="name" value="<?=$profile['name']?>">
+     <div class="text-center">
+     <img src="<?=$profile['profile']?>" alt="<?=$profile['name'];?>" class="rounded-circle" width="100" height="100">
+     </div>
+
+<form method="post" enctype="multipart/form-data">
+<div class="form-group">
+    <label for="name">Name:</label>
+    <input type="text" class="form-control" id="name" name="name" value="<?=$profile['name'];?>">
   </div>
+ 
   <div class="form-group">
-    <label for="username">Username</label>
-    <input type="text" class="form-control" id="username" name="username" value="<?=$profile['username']?>">
+    <label for="username">User Name:</label>
+    <input type="text" class="form-control" id="username" name="username" value="<?=$profile['username'];?>">
   </div>
+
   <div class="form-group">
-    <label for="email">Email address</label>
-    <input type="email" class="form-control" id="email" name="email" value="<?=$profile['email']?>">
+    <label for="email1">Email address</label>
+    <input type="email" class="form-control" id="email1" name="email" value="<?=$profile['email'];?>">
   </div>
-  <button type="submit" class="btn btn-primary">Update</button>
+ 
+  <button type="submit" class="btn btn-primary" name="update">Save</button>
 </form>
+    
     </div>
     <div class="col-md-3"></div>
     </div>
     </div>
-
-
     <script src="https://code.jquery.com/jquery-3.4.1.slim.min.js" integrity="sha384-J6qa4849blE2+poT4WnyKhv5vZF5SrPo0iEjwBvKU7imGFAV0wwj1yYfoRSJoZ+n" crossorigin="anonymous"></script>
     <script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.0/dist/umd/popper.min.js" integrity="sha384-Q6E9RHvbIyZFJoft+2mJbHaEWldlvI9IOYy5n3zV9zzTtmI3UksdQRVvoxMfooAo" crossorigin="anonymous"></script>
     <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/js/bootstrap.min.js" integrity="sha384-wfSDF2E50Y2D1uUdj0O3uMBJnjuUD4Ih7YwaYd1iqfktj0Uod8GCExl3Og8ifwB6" crossorigin="anonymous"></script>

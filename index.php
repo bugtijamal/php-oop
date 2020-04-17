@@ -1,6 +1,13 @@
 <?php
+session_start();
  include_once 'users.php';
  $db = new User();
+ 
+ if(!empty($_SESSION['messages'])){
+   echo $_SESSION['messages'];
+   unset($_SESSION['messages']);
+ }
+
 ?>
 
 <!doctype html>
@@ -42,7 +49,7 @@
   <td><?=$user['name'];?></td>
   <td><?=$user['email'];?></td>
   <td><?=$user['date_created'];?></td>
-  <td> <a href="update.php?id=<?=$user['id']?>">Update</a> </td>
+  <td> <a href="update.php?id=<?=$user['id'];?>" class="btn btn-sm btn-info"> Update </a></td>
   <td>Delete</td>
   </tr>
   <?php 

@@ -25,6 +25,27 @@ if(isset($_POST['submit'])){
   header('Location:index.php');
 }
 
+elseif(isset($_POST['update'])){
+    if(!empty($_GET['id'])){
+        $id = $_GET['id'];
+        $condition =  array("id" => $id);
+        $fields = array(
+            "name" => $_POST['name'],
+            "username" => $_POST['username'],
+            "email" => $_POST['email']
+        );
+        
+        $update = $db->update($tablename, $fields, $condition);
+        $messages = $update?" <p class='ml-5 text-center p-2 bg-info'>User data has been updated successfully! </p>":"<p class='ml-5 text-center text-danger'>There is some problems while updating user!</p>";
+        $_SESSION['messages'] = $messages;
+        header('Location:index.php');
+
+
+
+    }
+}
+
+
 elseif(isset($_POST['login'])){
     $email = $_POST['email'];
     $password = $_POST['password'];

@@ -3,7 +3,7 @@ session_start();
 include_once "Connection.php";
 
 class User extends Connection{
- //register new users
+ //register new users method
     public function insert($table, $data){
         if(!empty($data) && is_array($data)){
             $columns = implode(',', array_keys($data));
@@ -22,7 +22,7 @@ class User extends Connection{
             return false;
         }
     }
-   // get all users 
+   // get all users method
     public function select($table){
         $query = $this->db->prepare("SELECT * FROM $table ORDER BY id DESC");
         $query->execute();
@@ -31,12 +31,46 @@ class User extends Connection{
         }
         return $data;
     }
-    public function profile($table, $id){
-        $query = $this->db->prepare("SELECT * FROM $table WHERE id = :id LIMIT 1");
-        $query->execute(array(":id"=>$id));
-        $row = $query->fetch(PDO::FETCH_ASSOC);
-        return $row;
+
+    //update method 
+    public function update($table , $data, $where){
+        if($data !=null){
+            $columns = '';
+            $condition = '';
+            $i = 1;
+            foreach($data as $key=>$value){
+                $columns .= "$key='$value' ";
+                if($i < count($data)){
+                    $columns .= ',';
+                }
+                $i ++;
+            }
+
+            if(!empty($where) && is_array($where)){
+                foreach($where as $key=>$value){
+                    $condition .= $key ."='$value'";
+                    $i++;
+                }
+            }
+
+            $query = $this->db->prepare("UPDATE $table SET $columns WHERE $condition");
+            if($query->execute()){
+                return true;
+            }
+            else{
+                return false;
+            }
+        }
+        return false;
     }
+   
+  // user profile method 
+  public function profile($table, $id){
+      $query = $this->db->prepare("SELECT * FROM $table WHERE id = :id LIMIT 1");
+      $query->execute(array(":id"=>$id));
+      $row = $query->fetch(PDO::FETCH_ASSOC);
+      return $row;
+  }
     // Login method 
    public function login($table, $email, $password){
        $error ="";
@@ -52,7 +86,6 @@ class User extends Connection{
            else{
            $_SESSION['messages'] ="Wrong password try again !";
             header("Location:login.php");
-            
             
            }
        }
